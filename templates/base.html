@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}Live the experience{% endblock %} | AIESEC</title>
+</head>
+<body>
+	<!--// Header -->
+	<header>
+		<h1><a href="/">Aiesec</a></h1>
+		<!-- to be added: Navigation -->
+		{% block extended_header %}{% endblock %}
+	</header>
+
+	<main>
+		{% block content %}
+		{% endblock %}
+	</main>
+
+	<!--// Footer -->
+	<footer>
+		<p>&copy; 2018</p>
+	</footer>
+</body>
+</html>
