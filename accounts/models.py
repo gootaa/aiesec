@@ -12,6 +12,9 @@ class User(AbstractUser):
 		(2, 'company'),
 	)
 
+	first_name = None
+	last_name = None
+	email = models.EmailField(('email address'), blank=False)
 	user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
 	image = models.ImageField(upload_to='account_imgs/', blank=True)
 
@@ -19,23 +22,23 @@ class User(AbstractUser):
 class Student(models.Model):
 
 	GENDER_CHOICES = (
-		(1, 'male'),
-		(2, 'female'),
+		('male', 'Male'),
+		('female', 'Female'),
 	)
 
 	user = models.OneToOneField(User)
 	first_name = models.CharField(max_length=150)
 	last_name = models.CharField(max_length=150)
 	birth_date = models.DateField()
-	gender = models.PositiveSmallIntegerField(choices=GENDER_CHOICES)
-	resume = models.FileField(upload_to='resumes/')
+	gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+	resume = models.FileField(upload_to='resumes/', blank=True)
 
 
 class Company(models.Model):
-
 	user = models.OneToOneField(User)
-	name = models.CharField(max_length=150)
-	location = models.CharField(max_length=70)
+	company_name = models.CharField(max_length=150)
+	location = models.CharField(max_length=150)
+	description = models.TextField(blank=True)
 
 
 class Language(models.Model):
