@@ -3,6 +3,8 @@ from django.views.generic import TemplateView, CreateView
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 
 from .models import User
@@ -59,6 +61,49 @@ def activate_account(request, uidb64, token):
 		return render(request, 'activation_invalid.html')
 
 
+@login_required
+def account_settings(request):
+    """
+    Displays EmailForm and PasswordChangeForm
+    """
+    email_form = EmailForm(instance=request.user)
+    password_form = PasswordChangeForm(request.user)
+
+    return render(request,
+                  'account-settings.html',
+                  {'email_form':email_form,
+                   'password_form':password_form})
+
+
+@login_required
+def change_email(request):
+    """
+    Handles EmailForm and responds to user using messages
+    """
+    if request.method == 'POST':
+        form = EmailForm(instance=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your Email was updated successfully!')
+        else:
+            messages.error(request, 'Please enter valid data.')
+    return redirect('account_settings')
+
+
+@login_required
+def change_password(request):
+    """
+    Handles PasswordChangeForm and responds to user using messages
+    """
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.error(request, 'Please enter valid data')
+    return redirect('account_settings')
 
 
 

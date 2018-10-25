@@ -3,12 +3,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
 from .models import User, Student, Company
+from .forms import EmailForm, RegistrationForm
 
 
 GENDER_CHOICES = (
 		('male', 'Male'),
 		('female', 'Female'),
 	)
+
 
 class StudentRegisterForm(UserCreationForm):
     first_name = forms.CharField(max_length=150)
@@ -53,5 +55,11 @@ class CompanyRegisterForm(UserCreationForm):
         company = Company()
         company.company_name = self.cleaned_data.get('company_name')
         company.location = self.cleaned_data.get('location')
+
+
+class EmailForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)
 
 
