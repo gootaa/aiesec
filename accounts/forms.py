@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
 from .models import User, Student, Company
-from .forms import EmailForm, RegistrationForm
+
 
 
 GENDER_CHOICES = (
@@ -24,7 +24,7 @@ class StudentRegisterForm(UserCreationForm):
     
     @transaction.atomic
     def save(self):
-        user = super.save(commit=False)
+        user = super().save(commit=False)
         user.user_type = 1
         user.is_active = False
         user.save()
@@ -48,7 +48,7 @@ class CompanyRegisterForm(UserCreationForm):
     
     @transaction.atomic
     def save(self):
-        user = super.save(commit=False)
+        user = super().save(commit=False)
         user.user_type = 2
         user.is_active = False
         user.save()
